@@ -34,6 +34,9 @@ public class Login extends AppCompatActivity {
                 String name = edtname.getText().toString();
                 String password = edtpass.getText().toString();
                 Toast.makeText(getApplicationContext(),"Logging in",Toast.LENGTH_SHORT).show();
+                Intent i=new Intent(Login.this,Add.class);
+                Login.this.startActivity(i);
+                finish();
 
             }
         });

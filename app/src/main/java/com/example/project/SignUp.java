@@ -67,7 +67,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                         name+" "+email+" "+gst+" "+pass+" "+conpass+" "+mobile+" "+" "+genderradiob.getText(),
                         Toast.LENGTH_LONG).show();
 
-                Intent intent=new Intent(SignUp.this,Menu.class);
+                Intent intent=new Intent(SignUp.this,Login.class);
                 SignUp.this.startActivity(intent);
 
             }

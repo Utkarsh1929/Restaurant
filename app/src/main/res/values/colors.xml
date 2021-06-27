@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="backclr">#8C726F</color>
     <color name="textback">#170342</color>
+    <color name="textbackgr">#ACAAA9</color>
+    <color name="buttonback">#76C4FF</color>
+    <color name="mainback">#752D28</color>
 </resources>
