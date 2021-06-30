@@ -1,9 +1,12 @@
 package com.example.project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.widgets.Helper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,33 +14,86 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class Login extends AppCompatActivity {
 
-    EditText edtname,edtpass;
+    EditText edtemail,edtpass;
     TextView textregister;
-
+    dbhelperlogin helper;
     Button btnlogin;
+    userData user;
+    FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        edtname=findViewById(R.id.email);
+        helper = new dbhelperlogin(this);
+        edtemail=findViewById(R.id.email);
         edtpass=findViewById(R.id.password);
         textregister=findViewById(R.id.register);
         btnlogin=findViewById(R.id.login);
+        firebaseFirestore= FirebaseFirestore.getInstance();
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String name = edtname.getText().toString();
-                String password = edtpass.getText().toString();
-                Toast.makeText(getApplicationContext(),"Logging in",Toast.LENGTH_SHORT).show();
-                Intent i=new Intent(Login.this,Add.class);
-                Login.this.startActivity(i);
-                finish();
 
+                String email = edtemail.getText().toString();
+                String password = edtpass.getText().toString();
+                if(email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                {
+                    edtemail.setError("Enter a valid email address");
+                    edtemail.requestFocus();
+                }
+                else if(password.isEmpty() || password.length()<6)
+                {
+                    edtpass.setError("Incorrect password");
+                    edtpass.requestFocus();
+                }
+                else {
+                    firebaseFirestore.collection("userData").document(email).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                            user = documentSnapshot.toObject(userData.class);
+                            String newuser = user.getEmail();
+                            String newuserpass = user.getPass();
+                            if(email.equals(newuser) && password.equals(newuserpass))
+                            {
+                            Toast.makeText(Login.this, newuser, Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(Login.this, Add.class);
+                            Login.this.startActivity(i);
+                            }
+                else{
+                                Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            Toast.makeText(Login.this,e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                    /*Boolean insert = helper.insertuser(email, password);
+                    if (insert) {
+                        Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
+
+                    }
+                    Toast.makeText(getApplicationContext(), "Logging in", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(Login.this, Add.class);
+                    Login.this.startActivity(i);
+                    finish();*/
+                }
             }
         });
 
