@@ -4,61 +4,77 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Menu extends AppCompatActivity {
 
-
-    RecyclerView recyclerView;
-
-
-    ArrayList<itemss> menuitems;
-
-
-
+    private ItemsAdapter itemsAdapter;
+    private RecyclerView recyclerView;
+    private ArrayList<itemData> menuArrayList;
+    private FirebaseFirestore db;
+    ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         recyclerView=findViewById(R.id.recyc_menu);
-
-        Bundle bundle= getIntent().getExtras();
-        String name = bundle.getString("item");
-        String type = bundle.getString("type");
-        String cost = bundle.getString("cost");
-        menuitems=new ArrayList<>();
-        menuitems.add(new itemss(name, type, cost));
-        ItemsAdapter itemsAdapter = new ItemsAdapter(this,menuitems);
+        loading=findViewById(R.id.progbar);
+        db= FirebaseFirestore.getInstance();
+        menuArrayList=new ArrayList<>();
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        itemsAdapter = new ItemsAdapter(menuArrayList,this);
         recyclerView.setAdapter(itemsAdapter);
 
-    }
+        db.collection("itemData").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty())
+                {
+                    loading.setVisibility(View.GONE);
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    for(DocumentSnapshot d:list)
+                    {
+                        itemData i= d.toObject(itemData.class);
+                        menuArrayList.add(i);
 
+                    }
+                    itemsAdapter.notifyDataSetChanged();
+                }
+                else
+                {
+                    Toast.makeText(Menu.this, "No data found in database", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(Menu.this, "Fail to get data", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
@@ -108,4 +124,4 @@ public class Menu extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    }
+}

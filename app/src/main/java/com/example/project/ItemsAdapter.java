@@ -18,29 +18,33 @@ import java.util.ArrayList;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>
 {
-    Context context;
-    ArrayList<itemss> menuitems;
-    AlertDialog.Builder builder;
-    ItemsAdapter(Context context, ArrayList<itemss> menuitems)
+    
+    private ArrayList<itemData> menuArrayList;
+    private AlertDialog.Builder builder;
+    private Context context;
+
+    public ItemsAdapter(ArrayList<itemData> menuArrayList, Context context)
     {
         this.context=context;
-        this.menuitems=menuitems;
+        this.menuArrayList=menuArrayList;
     }
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        LayoutInflater inflater=LayoutInflater.from(parent.getContext());
-        View listitem=inflater.inflate(R.layout.list_item,parent,false);
-        ViewHolder viewHolder = new ViewHolder(listitem);
-        return viewHolder;
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemsAdapter.ViewHolder holder, int position)
     {
+        itemData item = menuArrayList.get(position);
+        holder.textname.setText(item.getItemName());
+        holder.texttype.setText(item.getItemType());
+        holder.textcost.setText(item.getItemCost());
+
+
         builder = new AlertDialog.Builder(context);
-        addItem(position,holder);
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,9 +53,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        menuitems.remove(position);
+                        menuArrayList.remove(position);
                         notifyItemChanged(position);
-                        notifyItemRangeChanged(position, menuitems.size());
+                        notifyItemRangeChanged(position, menuArrayList.size());
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
@@ -67,32 +71,22 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>
             }
         });
     }
-    private void addItem(int position, ViewHolder holder)
-    {
-        itemss item = menuitems.get(position);
-        holder.textname.setText(item.getName());
-        holder.texttype.setText(item.getType());
-        holder.textcost.setText(item.getCost());
-
-    }
 
     @Override
     public int getItemCount() {
-        return menuitems.size();
+        return menuArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public Button delete;
-        public TextView textname, texttype, textcost;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private final Button delete;
+        private final TextView textname, texttype, textcost;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.textname=itemView.findViewById(R.id.txt_listname);
-            this.texttype=itemView.findViewById(R.id.txt_listtype);
-            this.textcost=itemView.findViewById(R.id.txt_listcost);
-            this.delete=itemView.findViewById(R.id.btn_del);
-
-
+            textname=itemView.findViewById(R.id.txt_listname);
+            texttype=itemView.findViewById(R.id.txt_listtype);
+            textcost=itemView.findViewById(R.id.txt_listcost);
+            delete=itemView.findViewById(R.id.btn_del);
         }
     }
 }

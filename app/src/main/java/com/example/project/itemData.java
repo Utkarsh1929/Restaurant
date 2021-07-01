@@ -1,46 +1,42 @@
 package com.example.project;
 
 public class itemData {
-    String itemname;
-    String itemtype;
-    String itemcost;
+    String itemName;
+    String itemType;
+    String itemCost;
+
 
     public itemData(){
 
     }
 
-    public itemData(String itemname, String itemtype, String itemcost) {
-        this.itemname = itemname;
-        this.itemtype = itemtype;
-        this.itemcost = itemcost;
+    public itemData(String itemName, String itemType, String itemCost) {
+        this.itemName = itemName;
+        this.itemType = itemType;
+        this.itemCost = itemCost;
     }
 
-
-
-
-    public String getItemname() {
-        return itemname;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setItemname(String itemname) {
-        this.itemname = itemname;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public String getItemtype() {
-        return itemtype;
+    public String getItemType() {
+        return itemType;
     }
 
-    public void setItemtype(String itemtype) {
-        this.itemtype = itemtype;
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
     }
 
-    public String getItemcost() {
-        return itemcost;
+    public String getItemCost() {
+        return itemCost;
     }
 
-    public void setItemcost(String itemcost) {
-        this.itemcost = itemcost;
+    public void setItemCost(String itemCost) {
+        this.itemCost = itemCost;
     }
-
-
 }
