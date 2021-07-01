@@ -21,7 +21,6 @@ public class Add extends AppCompatActivity {
     private EditText itemnameedt, itemtypeedt, priceedt;
     private Button add, viewmenu;
     private String itemName,itemType,itemCost;
-    //itemData itemsdata;
     private FirebaseFirestore db;
 
     @Override
