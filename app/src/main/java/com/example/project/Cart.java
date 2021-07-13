@@ -41,19 +41,7 @@ public class Cart extends AppCompatActivity {
         loading = findViewById(R.id.progbar);
         db = FirebaseFirestore.getInstance();
         cartArrayList = new ArrayList<>();
-        //  Bundle bundle = getIntent().getExtras();
         gotobill = findViewById(R.id.btn_gotobill);
-        /*if(bundle != null){
-            String name = bundle.getString("name");
-            String type = bundle.getString("type");
-            String cost = bundle.getString("money");
-            Cartgetset cartItems = new Cartgetset(name,type,cost);
-            cartArrayList.add(cartItems);
-
-
-        }*/
-
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartadapt = new cartAdapter(this,cartArrayList);

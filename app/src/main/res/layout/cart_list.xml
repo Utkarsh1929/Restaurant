@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/idCartItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="15dp"
     android:layout_margin="5dp"
+    android:layout_marginStart="15dp"
+    app:cardBackgroundColor="#E39D9D"
     app:cardCornerRadius="6dp"
     app:cardElevation="4dp">
 
@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
             android:fontFamily="@font/averia_libre_bold"
             android:text="Name"
             android:textColor="#090909"
@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_cartlistname"
             android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
             android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
             android:fontFamily="@font/averia_libre"
             android:text="type"
             android:textColor="#0B0A0A"
@@ -59,6 +59,18 @@
             android:textSize="16dp"
             android:textStyle="bold" />
 
-
+        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+            android:id="@+id/btn_cnt"
+            android:layout_width="113dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txt_cartlistcost"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="0dp"
+            android:background="#EDE8E8"
+            android:backgroundTint="#ACA5A5"
+            app:backGroundColor="#A3A1A1"
+            app:initialNumber="1"
+            app:textColor="@color/white" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

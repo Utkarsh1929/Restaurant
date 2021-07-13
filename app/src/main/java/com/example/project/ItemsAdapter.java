@@ -98,6 +98,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>
                 cartdata.setName(item.getItemName());
                 cartdata.setType(item.getItemType());
                 cartdata.setCost(item.getItemCost());
+                cartdata.setDocumentId(holder.ic.getId());
 
                 holder.ic.set(cartdata).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -113,21 +114,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>
                 });
             }
         });
-        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = item.getItemName();
-                String type = item.getItemType();
-                String money = item.getItemCost();
-                Bundle bundle = new Bundle();
-                bundle.putString("name",name);
-
-
-
-                Toast.makeText(context, name+" "+type+" "+money+" ", Toast.LENGTH_SHORT).show();
-
-            }
-        });*/
     }
 
     @Override
