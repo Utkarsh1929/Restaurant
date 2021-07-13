@@ -2,12 +2,12 @@ package com.example.project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,23 +32,46 @@ public class Menu extends AppCompatActivity {
     private ItemsAdapter itemsAdapter;
     private RecyclerView recyclerView;
     private ArrayList<itemData> menuArrayList;
+   // private ArrayList<Cartgetset> cartgetsetArrayList;
     private FirebaseFirestore db;
     ProgressBar loading;
+    FloatingActionButton floatingActionButton;
+    FirebaseAuth mAuth;
+   // private Object cartgetset;
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         recyclerView=findViewById(R.id.recyc_menu);
         loading=findViewById(R.id.progbar);
+        floatingActionButton=findViewById(R.id.btn_floating);
         db= FirebaseFirestore.getInstance();
         menuArrayList=new ArrayList<>();
+        //cartgetsetArrayList=getCartgetset(false, isSelect);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         itemsAdapter = new ItemsAdapter(menuArrayList,this);
         recyclerView.setAdapter(itemsAdapter);
+       // cartgetsetArrayList=new ArrayList<>();
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        db.collection("itemData").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                startActivity(new Intent(Menu.this,Cart.class));
+            }
+        });
+
+      /*  FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            startActivity(new Intent(this,Login.class));
+            this.finish();
+        }else{
+            Toast.makeText(this, currentUser.getEmail(), Toast.LENGTH_SHORT).show();
+        }*/
+
+        CollectionReference cr=db.collection("itemData");
+        cr.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if(!queryDocumentSnapshots.isEmpty())
@@ -54,6 +81,8 @@ public class Menu extends AppCompatActivity {
                     for(DocumentSnapshot d:list)
                     {
                         itemData i= d.toObject(itemData.class);
+                        /*String docId = i.getDocumentId();
+                        i.setDocumentId(docId);*/
                         menuArrayList.add(i);
 
                     }
@@ -70,9 +99,6 @@ public class Menu extends AppCompatActivity {
                 Toast.makeText(Menu.this, "Fail to get data", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
 
     }
 

@@ -15,16 +15,22 @@
         <activity android:name=".Settings" />
         <activity android:name=".Bill" />
         <activity android:name=".Add" >
-        <intent-filter>
+            <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+
+
+
         </activity>
         <activity android:name=".Menu" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
         <activity android:name=".MainActivity">
+
+
+
 
         </activity>
 

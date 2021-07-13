@@ -4,14 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/idMenuItem"
-    android:layout_width="match_parent"
+    android:layout_width="190dp"
     android:layout_height="wrap_content"
+    android:layout_marginStart="15dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="6dp"
     app:cardElevation="4dp">
-
-
-
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -19,9 +17,10 @@
 
     <TextView
         android:id="@+id/txt_listname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/averia_libre_bold"
         android:text="Name"
@@ -31,10 +30,11 @@
 
     <TextView
         android:id="@+id/txt_listtype"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_listname"
         android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/averia_libre"
         android:text="type"
@@ -44,35 +44,28 @@
 
     <TextView
         android:id="@+id/txt_listcost"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="150dp"
+        android:layout_below="@+id/txt_listtype"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:fontFamily="@font/averia_libre_bold"
         android:text="cost"
         android:textColor="#090808"
         android:textSize="16dp"
         android:textStyle="bold" />
     <Button
-        android:id="@+id/btn_del"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="12dp"
-        android:layout_marginLeft="50dp"
-        android:backgroundTint="#FB0E0E"
-        android:text="Del"
-        android:textColor="#050505"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/txt_listcost"
-        android:layout_centerHorizontal="true"/>
-
-    <CheckBox
-        android:id="@+id/check_listmark"
-        android:layout_width="wrap_content"
-        android:layout_height="67dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp" />
-
+        android:backgroundTint="@color/white"
+        android:id="@+id/btn_itmcart"
+        android:text="Add to Cart"
+        android:textColor="@color/black"
+        android:layout_marginBottom="6dp"/>
 
 
 

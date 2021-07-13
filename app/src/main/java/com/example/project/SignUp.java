@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -32,6 +34,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     userData user;
     FirebaseFirestore firebaseFirestore;
     ProgressDialog loading;
+    private FirebaseAuth mAuth;
     //RadioGroup radioGroup;
     //RadioButton radiomale,radiofemale,genderradiob;
     //String group[] = {"A+","B+","AB+","O+","A-","B-","AB-","O-"};
@@ -48,6 +51,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         edtconpass = findViewById(R.id.edt_conf);
         edtmobile = findViewById(R.id.edt_mob);
         btnregis = findViewById(R.id.btn_regis);
+        mAuth=FirebaseAuth.getInstance();
         firebaseFirestore= FirebaseFirestore.getInstance();
         loading=new ProgressDialog(SignUp.this);
         /*radiomale = findViewById(R.id.radio_male);
@@ -109,6 +113,16 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                 }
 
                 else {
+                    mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(SignUp.this, "Sign Up Complete", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                     user= new userData(name,email,gst,pass,conpass,mobile);
                     firebaseFirestore.collection("userData").document(email).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

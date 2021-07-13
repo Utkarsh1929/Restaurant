@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,6 +31,7 @@ public class Login extends AppCompatActivity {
     Button btnlogin;
     userData user;
     FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class Login extends AppCompatActivity {
         textregister=findViewById(R.id.register);
         btnlogin=findViewById(R.id.login);
         firebaseFirestore= FirebaseFirestore.getInstance();
+        mAuth=FirebaseAuth.getInstance();
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +62,17 @@ public class Login extends AppCompatActivity {
                     edtpass.requestFocus();
                 }
                 else {
+                    mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(Login.this, "User authenticated", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(Login.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
                     firebaseFirestore.collection("userData").document(email).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -82,6 +97,7 @@ public class Login extends AppCompatActivity {
 
                         }
                     });
+
                     /*Boolean insert = helper.insertuser(email, password);
                     if (insert) {
                         Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
